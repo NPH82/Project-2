@@ -1,0 +1,29 @@
+{
+  "name": "project-2",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/NPH82/Project-2.git"
+  },
+  "author": "Nic Hoey",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/NPH82/Project-2/issues"
+  },
+  "homepage": "https://github.com/NPH82/Project-2#readme",
+  "dependencies": {
+    "body-parser": "^1.18.2",
+    "chai": "^4.1.2",
+    "express": "^4.16.1",
+    "express-handlebars": "^3.0.0",
+    "method-override": "^2.3.10",
+    "mocha": "^4.0.0",
+    "mysql": "^2.14.1",
+    "sequelize": "^4.13.5"
+  }
+}
