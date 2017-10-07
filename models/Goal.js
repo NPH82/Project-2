@@ -17,6 +17,11 @@ module.exports = function(sequelize, DataTypes) {
       allowNull: false,
       defaultValue: 3
     },
+    complete: {
+      type: DataTypes.BOOLEAN,
+      allowNull: false,
+      defaultValue: false
+    }
   });
   Goal.associate = function (db) {
     Goal.belongsTo(db.User, {
