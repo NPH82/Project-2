@@ -29,13 +29,11 @@ module.exports = function(app) {
     });
   });
 
-  app.get("/api/goals", function(req, res) {
-    var query = {};
-    if (req.query.user_id) {
-      query.UserId = req.query.user_id;
-    }
+  app.get("/api/goals/:category", function(req, res) {
     db.Goal.findAll({
-      where: query,
+      where: {
+        category: req.params.category
+      },
       include: [db.User]
     }).then(function(dbGoal) {
       res.json(dbGoal);
