@@ -22,8 +22,8 @@
       </div>
       <div class="collapse navbar-collapse" id="myNavbar">
         <ul class="nav navbar-nav">
-          <li class="active"><a href="#">Home</a></li>
-          <li><a href="creategoals.html">Add New Goal</a></li>
+          <li class="active"><a href="index.html">Home</a></li>
+          <li><a href="#">Add New Goal</a></li>
           <li><a href="starterpack.html">Starter Pack</a></li>
         </ul>
         <ul class="nav navbar-nav navbar-right">
@@ -35,20 +35,25 @@
   </nav>
   <div class="container">
     <div class="jumbotron">
-      <h1 class="welcome">Welcome Back!!</h1>
+      <h1 class="newGoals">Let's Get Started on a New Goal</h1>
+      <form>
+        <div class="form-group">
+          <label for="goal">Add a Goal:</label>
+          <input type="text" class="form-control" id="goal">
+        </div>
+        <div class="form-group">
+          <label for="difficulty">Difficulty Level (select one):</label>
+          <select class="form-control" id="difficulty">
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+          </select>
+        </div>
+      </form>
     </div>
-    <div class="jumbotron">
-      <h1 class="currentGoals">Current Goals</h1>
-      <hr>
-      <ul>
-        <li class="goals" data="complete">Go for a Walk around the Block</li>
-        <li class="goals" data="incomplete">Eat a Well-balanced Meal</li>
-      </ul>
-    </div>
-    <div class="jumbotron">
-      <h1 class="futureGoals">Future Goals</h1>
-        <li class="goals" data="incomplete">Lose 10 pounds</li>
-    </div>
+    <p>Stuck with figuring out a new challenge? Why not try one of our <a href="starterpack.html">Starter Packs</a>?</p>
   </div>
 </body>
 </html>
