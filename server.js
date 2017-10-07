@@ -26,7 +26,8 @@ app.set("view engine", "handlebars");
 // require("./routes/html-routes.js")(app);
 
 db.sequelize.sync().then(function() {
-	console.log("Database synced")
+  console.log("Database synced")
   app.listen(PORT, function() {
     console.log("Listening on PORT " + PORT);
   });
+});
