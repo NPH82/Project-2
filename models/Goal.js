@@ -15,8 +15,15 @@ module.exports = function(sequelize, DataTypes) {
     weight: {
       type: DataTypes.INTEGER,
       allowNull: false,
-      defaultValue: 3
+      min: 1,
+      max: 5,
+      defaultValue: 1
     },
+    complete: {
+      type: DataTypes.BOOLEAN,
+      allowNull: false,
+      defaultValue: false
+    }
   });
   Goal.associate = function (db) {
     Goal.belongsTo(db.User, {

@@ -7,17 +7,17 @@ module.exports = function(sequelize, DataTypes) {
         len: [1]
       }
     },
-    password: {
+    points: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      defaultValue: 0
+    },
+    firebaseId: {
       type: DataTypes.STRING,
       allowNull: false,
       validate: {
         len: [1]
       }
-    },
-    points: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-      defaultValue: 0
     }
   });
   User.associate = function (models) {

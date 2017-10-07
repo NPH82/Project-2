@@ -22,10 +22,10 @@ app.set("view engine", "handlebars");
 //Future Implementations for running routes (maybe a better spot for these?)
 //var routes = require("./controllers/controller.js");
 //app.use(routes);
-// require("./routes/api-routes.js")(app);
-// require("./routes/html-routes.js")(app);
+require("./routes/api-routes.js")(app);
+require("./routes/html-routes.js")(app);
 
-db.sequelize.sync().then(function() {
+db.sequelize.sync({force: true}).then(function() {
   console.log("Database synced")
   app.listen(PORT, function() {
     console.log("Listening on PORT " + PORT);
