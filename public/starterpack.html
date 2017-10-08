@@ -7,6 +7,8 @@
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <link rel="stylesheet" href="assets/css/style.css">
+  <script src="assets/javascript/app.js"></script>
   <title>Goal and Get It</title>
 </head>
 <body>
@@ -22,12 +24,28 @@
       </div>
       <div class="collapse navbar-collapse" id="myNavbar">
         <ul class="nav navbar-nav">
-          <li><a href="#">Home</a></li>
+          <li><a href="/">Home</a></li>
           <li><a href="create_goal">Add New Goal</a></li>
           <li class="active"><a href="starter_packs">Starter Pack</a></li>
         </ul>
         <ul class="nav navbar-nav navbar-right">
-          <li><a href="#"><span class="glyphicon glyphicon-user"></span> Account Settings</a></li>
+          <li><a href ="#" data-toggle="modal" data-target="#login-modal" id="modalInit"><span class="glyphicon glyphicon-user"></span> Account Settings</a></li>
+          <div class="modal fade" id="login-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+            <div class="modal-dialog">
+            <div class="loginmodal-container">
+              <h1>Login to Your Account</h1><br>
+              <form>
+              <input type="text" name="user" id="userName" placeholder="Username">
+              <input type="password" name="password" id="password" placeholder="Password">
+              <input type="submit" name="login" id="login" class="login loginmodal-submit" value="Login">
+              </form>
+              
+              <div class="login-help">
+              <a href="#">Register</a> - <a href="#">Forgot Password</a>
+              </div>
+            </div>
+          </div>
+          </div>
           <li><a href="#">My Score<span class="badge"></span> 20</a></li>
         </ul>
       </div>
@@ -57,8 +75,6 @@
         <label><input type="checkbox" class="goals" data="incomplete" value="1">Wake up by 9 a.m.</label>
       </div>
       <a href="#" class="btn btn-success" role="button">Get Started</a>
-    </div>
-    <div class="jumbotron">
       <h1 class="savings">Save some Money.</h1>
       <p>Select up to 3.</p>
       <div class="checkbox">
@@ -71,8 +87,6 @@
         <label><input type="checkbox" class="goals" data="incomplete" value="2">Buy a smaller coffee or tea from the store.</label>
       </div>
       <a href="#" class="btn btn-success" role="button">Get Started</a>
-    </div>
-    <div class="jumbotron">
       <h1 class="savings">Get in Shape.</h1>
       <p>Select up to 3.</p>
       <div class="checkbox">
