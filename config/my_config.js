@@ -3,7 +3,7 @@ module.exports = {
     username: process.env.USERNAME,
     password: process.env.PASSWORD,
     database: "project2db",
-    host: "localhost",
+    host: "127.0.0.1",
     dialect: "mysql"
   },
   test: {
