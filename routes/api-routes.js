@@ -1,11 +1,15 @@
 var db = require("../models");
 
+
+var isAuthenticated = require("../config/middleware/isAuthenticated");
+
 module.exports = function(app) {
 
-  app.get("/api/users/:id", function(req, res) {
+  app.get("/api/users", isAuthenticated, function(req, res) {
+    console.log(req.user)
     db.User.findOne({
       where: {
-        id: req.params.id
+        firebaseId: req.user.id
       },
       include: [db.Goal]
     }).then(function(dbUser) {
@@ -13,13 +17,13 @@ module.exports = function(app) {
     });
   });
 
-  app.post("/api/users", function(req, res) {
+  app.post("/api/users", isAuthenticated, function(req, res) {
     db.User.create(req.body).then(function(dbUser) {
       res.json(dbUser);
     });
   });
 
-  app.delete("/api/Users/:id", function(req, res) {
+  app.delete("/api/Users/:id", isAuthenticated, function(req, res) {
     db.User.destroy({
       where: {
         id: req.params.id
@@ -29,10 +33,10 @@ module.exports = function(app) {
     });
   });
 
-  app.get("/api/goals/:category", function(req, res) {
+  app.get("/api/goals/:category", isAuthenticated, function(req, res) {
     db.Goal.findAll({
       where: {
-        category: req.params.category
+        category: req.params.category,
       },
       include: [db.User]
     }).then(function(dbGoal) {
@@ -40,7 +44,7 @@ module.exports = function(app) {
     });
   });
 
-  app.get("api/goals/:id", function(req, res) {
+  app.get("api/goals/:id", isAuthenticated, function(req, res) {
     db.Goal.findOne({
       where: {
         id: req.params.id
@@ -51,13 +55,13 @@ module.exports = function(app) {
     });
   });
 
-  app.post("/api/goals", function(req, res) {
+  app.post("/api/goals", isAuthenticated, function(req, res) {
     db.Goal.create(req.body).then(function(dbGoal) {
       res.json(dbGoal);
     });
   });
 
-  app.delete("/api/goals/:id", function(req, res) {
+  app.delete("/api/goals/:id", isAuthenticated, function(req, res) {
     db.Goal.destroy({
       where: {
         id: req.params.id
@@ -67,7 +71,7 @@ module.exports = function(app) {
     });
   });
 
-  app.put("/api/goals", function(req, res) {
+  app.put("/api/goals", isAuthenticated, function(req, res) {
     db.Goal.update(
       req.body, {
         where: {

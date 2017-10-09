@@ -62,11 +62,13 @@ $(document).ready(function () {
         auth
           .createUserWithEmailAndPassword(handleFormSubmit().userName, handleFormSubmit().password)
           .then(function() {
-
-            $("#login-modal").modal("hide");
-            $("#modalInit").hide();
-            $("#logout").show();
-            $("#title-span").html("Welcome to the site, " + auth.currentUser.email + "!!");
+            $.post("api/users", {name: auth.currentUser.email, firebaseId: auth.currentUser.uid}).then(function(data) {
+              console.log(data)
+              $("#login-modal").modal("hide");
+              $("#modalInit").hide();
+              $("#logout").show();
+              $("#title-span").html("Welcome to the site, " + data.name + "!!");
+            })
           })
           .catch(function(err) {
             $("#login-message").html(err.message);
