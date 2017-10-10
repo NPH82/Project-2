@@ -4,7 +4,7 @@ var serviceAccount = require("./config.json");
 
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
-  databaseURL: "https://auth-demo-5624d.firebaseio.com"
+  databaseURL: "https://goal-helper-login.firebaseio.com"
 });
 
 module.exports = admin;
