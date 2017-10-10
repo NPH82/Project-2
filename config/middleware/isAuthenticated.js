@@ -1,6 +1,8 @@
 var admin = require("../firebase/firebase-admin");
 
 module.exports = function(req, res, next) {
+  console.log(req.cookies);
+  // console.log("cookie token: " + req.cookies)
   var token = req.cookies.token;
   if (!req.cookies || !req.cookies.token) {
     res.json({ message: "Not signed in" }).status(401);
