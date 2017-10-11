@@ -22,6 +22,7 @@ $(document).ready(function () {
     } else {
       $("#title-span").html("Welcome ^_^");
     }
+
     $("#login").on("click", function(event) {
       event.preventDefault();
       if (!handleFormSubmit())
@@ -74,6 +75,13 @@ $(document).ready(function () {
             $("#login-message").html(err.message);
           })
       }
+    });
+
+    $("#goalGrab").on("click", function(event) {
+      event.preventDefault();
+      $.post("api/goals", {text: $("#goal").val().trim(), weight: $("#difficulty").val().trim()}).then(function(data) {
+        
+      })
     })
   });
 })
