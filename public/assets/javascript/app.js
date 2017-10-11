@@ -79,9 +79,20 @@ $(document).ready(function () {
 
     $("#goalGrab").on("click", function(event) {
       event.preventDefault();
-      $.post("api/goals", {text: $("#goal").val().trim(), weight: $("#difficulty").val().trim()}).then(function(data) {
-        
-      })
-    })
+      if (!auth.currentUser) {
+        $("#login-message").html("Please log in or register first!");
+        $("#login-modal").modal("show");
+      } else {
+        $.post("api/goals", {
+          text: $("#goal").val().trim(),
+          weight: $("#difficulty").val().trim(),
+          firebaseId: auth.currentUser.uid
+        }).then(function(data) {
+          console.log(data);
+        });
+      }
+    });
+
+    
   });
 })
