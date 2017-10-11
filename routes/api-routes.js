@@ -33,32 +33,29 @@ module.exports = function(app) {
     });
   });
 
-  app.get("/api/goals/:category", isAuthenticated, function(req, res) {
-    db.Goal.findAll({
-      where: {
-        category: req.params.category,
-      },
-      include: [db.User]
-    }).then(function(dbGoal) {
-      res.json(dbGoal);
-    });
-  });
-
-  app.get("api/goals/:id", isAuthenticated, function(req, res) {
-    db.Goal.findOne({
-      where: {
-        id: req.params.id
-      },
-      include: [db.User]
-    }).then(function(dbGoal) {
-      res.json(dbGoal);
-    });
+  app.get("/api/goals", isAuthenticated, function(req, res) {
+    db.User.findOne({
+        where: {
+          firebaseId: req.user.id
+        }
+      })
+      .then(function(dbUser) {
+        return db.Goal.findAll({
+          where: {
+            UserId: dbUser.id
+          },
+          include: [db.User]
+        })
+      })
+      .then(function(dbGoal) {
+        res.json(dbGoal);
+      });
   });
 
   app.post("/api/goals", isAuthenticated, function(req, res) {
     db.User.findOne({
         where: {
-          firebaseId: req.body.firebaseId
+          firebaseId: req.user.id
         }
       })
       .then(function(dbUser) {

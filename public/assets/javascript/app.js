@@ -12,6 +12,38 @@ function handleFormSubmit(event) {
   return newUser;
 }
 
+function listGoals() {
+  $.get("/api/goals").then(function(data) {
+    var incompleteArray = [];
+    var completeArray = [];
+    for (var i = 0; i < data.length; i++) {
+      if (!data[i].complete) {
+        var newGoal = 
+          "<li class='goals' id='" + data[i].User.firebaseId + data[i].id + "' data-complete='false'>"
+            +data[i].text
+            +"<button class='btn btn-primary update'>Update Goal</button>"
+            +"<button class='btn btn-success complete'>Mark as Complete</button>"
+            +"<button class='btn btn-danger delete'>Delete</button>"
+          +"</li>"
+          +"<br>";
+        incompleteArray.push(newGoal);
+      } else {
+        var newGoal = 
+          "<li class='goals' id='" + data[i].User.firebaseId + data[i].id + "' data-complete='true'>"
+            +data[i].text
+            +"<button class='btn btn-primary update'>Update Goal</button>"
+            +"<button class='btn btn-success complete'>Mark as Complete</button>"
+            +"<button class='btn btn-danger delete'>Delete</button>"
+          +"</li>"
+          +"<br>";
+        completeArray.push(newGoal);
+      }
+    }
+    $("#incomplete-list").html(incompleteArray);
+    $("#complete-list").html(completeArray);
+  })
+}
+
 $(document).ready(function () {
   authReady(function() {
     if (auth.currentUser) {
@@ -19,6 +51,7 @@ $(document).ready(function () {
       $("#modalInit").hide();
       $("#logout").show();
       $("#title-span").html("Welcome back, " + auth.currentUser.email + "!!");
+      listGoals();
     } else {
       $("#title-span").html("Welcome ^_^");
     }
@@ -64,7 +97,6 @@ $(document).ready(function () {
           .createUserWithEmailAndPassword(handleFormSubmit().userName, handleFormSubmit().password)
           .then(function() {
             $.post("api/users", {name: auth.currentUser.email, firebaseId: auth.currentUser.uid}).then(function(data) {
-              console.log(data)
               $("#login-modal").modal("hide");
               $("#modalInit").hide();
               $("#logout").show();
@@ -86,9 +118,10 @@ $(document).ready(function () {
         $.post("api/goals", {
           text: $("#goal").val().trim(),
           weight: $("#difficulty").val().trim(),
-          firebaseId: auth.currentUser.uid
         }).then(function(data) {
-          console.log(data);
+          if (data) {
+
+          }
         });
       }
     });

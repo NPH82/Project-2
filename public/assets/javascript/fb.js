@@ -29,7 +29,6 @@ function setCookie(cname, cvalue) {
   d.setTime(d.getTime() + 60 * 1000 * 55);
   var expires = "expires=" + d.toUTCString();
   document.cookie = cname + "=" + cvalue + ";" + expires;
-  console.log(document.cookie);
 }
 
 function setToken(user) {
