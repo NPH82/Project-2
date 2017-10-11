@@ -7,11 +7,13 @@
   background-color: #FF881F;
   border-color: #FF881F;
 }
+
 a:hover {
     color: red;
     background-color: transparent;
     text-decoration: underline;
 }
+
 .navbar-inverse .navbar-brand {
   color: #FFFFFF;
 }
@@ -93,7 +95,8 @@ a:hover {
   /* border: 1px solid #3079ed; */
   border: 0px;
   color: #fff;
-  text-shadow: 0 1px rgba(0,0,0,0.1);
+
+  text-shadow: 0 1px rgba(0,0,0,0.1); 
   background-color: #4d90fe;
   padding: 17px 0px;
   font-family: roboto;
