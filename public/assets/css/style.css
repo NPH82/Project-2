@@ -1,6 +1,6 @@
 
 .jumbotron{
-  background-color: #2C8362;
+  background-color: #334B82;
   color: #FFFFFF;
 }
 .navbar-inverse{
@@ -8,10 +8,8 @@
   border-color: #FF881F;
 }
 
-a:hover {
-    color: red;
-    background-color: transparent;
-    text-decoration: underline;
+#myNavbar a:hover {
+    color: #CBF6E6;
 }
 
 .navbar-inverse .navbar-brand {
@@ -24,7 +22,7 @@ a:hover {
   text-align: center;
 }
 .navbar-inverse .navbar-nav>.active>a, .navbar-inverse .navbar-nav>.active>a:focus, .navbar-inverse .navbar-nav>.active>a:hover{
-  background-color: #2C8362;
+  background-color: #334B82;
 
 }
 
@@ -96,7 +94,7 @@ a:hover {
   border: 0px;
   color: #fff;
 
-  text-shadow: 0 1px rgba(0,0,0,0.1); 
+  text-shadow: 0 1px rgba(0,0,0,0.1);
   background-color: #4d90fe;
   padding: 17px 0px;
   font-family: roboto;
@@ -125,4 +123,3 @@ a:hover {
 .login-help{
   font-size: 12px;
 }
-
