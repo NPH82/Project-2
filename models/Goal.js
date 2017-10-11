@@ -7,11 +7,6 @@ module.exports = function(sequelize, DataTypes) {
         len: [1]
       }
     },
-    category: {
-      type: DataTypes.STRING,
-      allowNull: false,
-      defaultValue: "Personal"
-    },
     weight: {
       type: DataTypes.INTEGER,
       allowNull: false,

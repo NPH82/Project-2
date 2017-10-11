@@ -22,6 +22,7 @@ $(document).ready(function () {
     } else {
       $("#title-span").html("Welcome ^_^");
     }
+
     $("#login").on("click", function(event) {
       event.preventDefault();
       if (!handleFormSubmit())
@@ -74,6 +75,24 @@ $(document).ready(function () {
             $("#login-message").html(err.message);
           })
       }
-    })
+    });
+
+    $("#goalGrab").on("click", function(event) {
+      event.preventDefault();
+      if (!auth.currentUser) {
+        $("#login-message").html("Please log in or register first!");
+        $("#login-modal").modal("show");
+      } else {
+        $.post("api/goals", {
+          text: $("#goal").val().trim(),
+          weight: $("#difficulty").val().trim(),
+          firebaseId: auth.currentUser.uid
+        }).then(function(data) {
+          console.log(data);
+        });
+      }
+    });
+
+    
   });
 })

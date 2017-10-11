@@ -7,8 +7,8 @@ module.exports = {
     dialect: "mysql"
   },
   test: {
-    username: process.env.USERNAME,
-    password: process.env.PASSWORD,
+    username: process.env.PROJECT_DB_USERNAME,
+    password: process.env.PROJECT_DB_PASSWORD,
     database: "project2db",
     host: "localhost",
     dialect: "mysql"

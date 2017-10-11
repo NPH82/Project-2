@@ -56,9 +56,21 @@ module.exports = function(app) {
   });
 
   app.post("/api/goals", isAuthenticated, function(req, res) {
-    db.Goal.create(req.body).then(function(dbGoal) {
-      res.json(dbGoal);
-    });
+    db.User.findOne({
+        where: {
+          firebaseId: req.body.firebaseId
+        }
+      })
+      .then(function(dbUser) {
+        return db.Goal.create({
+          text: req.body.text,
+          weight: req.body.weight,
+          UserId: dbUser.id
+        })
+      })
+      .then(function(dbGoal) {
+        res.json(dbGoal);
+      });
   });
 
   app.delete("/api/goals/:id", isAuthenticated, function(req, res) {
