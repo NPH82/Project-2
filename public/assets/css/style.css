@@ -1,11 +1,17 @@
+
 .jumbotron{
-  background-color: #2C8362;
+  background-color: #334B82;
   color: #FFFFFF;
 }
 .navbar-inverse{
   background-color: #FF881F;
   border-color: #FF881F;
 }
+
+#myNavbar a:hover {
+    color: #CBF6E6;
+}
+
 .navbar-inverse .navbar-brand {
   color: #FFFFFF;
 }
@@ -16,7 +22,7 @@
   text-align: center;
 }
 .navbar-inverse .navbar-nav>.active>a, .navbar-inverse .navbar-nav>.active>a:focus, .navbar-inverse .navbar-nav>.active>a:hover{
-  background-color: #2C8362;
+  background-color: #334B82;
 
 }
 
@@ -87,7 +93,8 @@
   /* border: 1px solid #3079ed; */
   border: 0px;
   color: #fff;
-  text-shadow: 0 1px rgba(0,0,0,0.1); 
+
+  text-shadow: 0 1px rgba(0,0,0,0.1);
   background-color: #4d90fe;
   padding: 17px 0px;
   font-family: roboto;
@@ -111,7 +118,7 @@
   display: inline-block;
   opacity: 0.6;
   transition: opacity ease 0.5s;
-} 
+}
 
 .login-help{
   font-size: 12px;
