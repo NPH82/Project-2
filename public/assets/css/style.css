@@ -1,11 +1,13 @@
-
+body{
+  background-image: url('../images/backgroundImg.jpg');
+}
 .jumbotron{
   background-color: #334B82;
   color: #FFFFFF;
 }
 .navbar-inverse{
-  background-color: #FF881F;
-  border-color: #FF881F;
+  background-color: #FFB16D;
+  border-color: #FFB16D;
 }
 
 #myNavbar a:hover {
