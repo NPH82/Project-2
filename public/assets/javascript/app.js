@@ -13,13 +13,15 @@ function handleFormSubmit(event) {
 }
 
 function listGoals() {
+  $("#incomplete-list").empty();
+  $("#complete-list").empty();
   $.get("/api/goals").then(function(data) {
     var incompleteArray = [];
     var completeArray = [];
     for (var i = 0; i < data.length; i++) {
       if (!data[i].complete) {
         var newGoal = 
-          "<li class='goals' id='" + data[i].User.firebaseId + data[i].id + "' data-complete='false'>"
+          "<li class='goals' id='" + data[i].User.firebaseId + "|" + data[i].id + "' value=" + data[i].weight + " data-complete='false'>"
             +data[i].text
             +"<button class='btn btn-primary update'>Update Goal</button>"
             +"<button class='btn btn-success complete'>Mark as Complete</button>"
@@ -31,8 +33,6 @@ function listGoals() {
         var newGoal = 
           "<li class='goals' id='" + data[i].User.firebaseId + data[i].id + "' data-complete='true'>"
             +data[i].text
-            +"<button class='btn btn-primary update'>Update Goal</button>"
-            +"<button class='btn btn-success complete'>Mark as Complete</button>"
             +"<button class='btn btn-danger delete'>Delete</button>"
           +"</li>"
           +"<br>";
@@ -42,6 +42,36 @@ function listGoals() {
     $("#incomplete-list").html(incompleteArray);
     $("#complete-list").html(completeArray);
   })
+}
+
+function deleteGoal(id) {
+  $.ajax({
+    method: "DELETE",
+    url: "/api/goals/" + id
+  })
+  .done(function(data) {
+    if (data) {
+      listGoals();
+    } else {
+      alert("Oops, something went wrong here, give it a minute and try again.")
+    }
+  });
+}
+
+function updateGoal(goal) {
+  $.ajax({
+    method: "PUT",
+    url: "/api/goals",
+    data: goal
+  })
+  .done(function(data) {
+    if (data) {
+      console.log(data);
+      window.location = "/"
+    } else {
+      alert("Oops, something went wrong here, give it a minute and try again.")
+    }
+  });
 }
 
 $(document).ready(function () {
@@ -54,6 +84,8 @@ $(document).ready(function () {
       listGoals();
     } else {
       $("#title-span").html("Welcome ^_^");
+      $("incomplete-list").text("Here you can keep recurring goals that will update on a timely basis!");
+      $("complete-list").text("This is where your goals go when you complete them. You get points for these!");
     }
 
     $("#login").on("click", function(event) {
@@ -120,12 +152,42 @@ $(document).ready(function () {
           weight: $("#difficulty").val().trim(),
         }).then(function(data) {
           if (data) {
-
+            window.location = "/"
           }
         });
       }
     });
 
-    
+    $("body").on("click", ".complete", function(event) {
+      event.preventDefault();
+      var goalDone = {
+        id: $(this).parent().attr("id").split("|")[1],
+        complete: true
+      };
+      updateGoal(goalDone);
+    });
+
+    $("body").on("click", ".update", function(event) {
+      event.preventDefault();
+      window.location.href = "/update_goal?goal_id=" + $(this).parent().attr("id").split("|")[1];
+    });
+
+    if (window.location.search.indexOf("?goal_id=") !== -1) {
+      var goalId = window.location.search.split("=")[1];
+      $.get("/api/goals/" + goalId).then(function (data) {
+        $("#goal-update").val(data.text);
+        $("#difficulty-update").val(data.weight);
+      })
+    }
+
+    $("#goalUpdate").on("click", function() {
+      var goalUpdate = {
+        id: window.location.search.split("=")[1],
+        text: $("#goal-update").val().trim(),
+        weight: $("#difficulty-update").val()
+      };
+      console.log(goalUpdate);
+      updateGoal(goalUpdate);
+    });
   });
 })

@@ -29,43 +29,23 @@
       <div class="collapse navbar-collapse" id="myNavbar">
         <ul class="nav navbar-nav">
           <li><a href="/">Home</a></li>
-          <li class="active"><a href="create_goal">Add New Goal</a></li>
-          <li><a href="starter_packs">Starter Pack</a></li>
         </ul>
         <ul class="nav navbar-nav navbar-right">
-          <li><a href="#" data-toggle="modal" data-target="#login-modal" id="modalInit"><span class="glyphicon glyphicon-user"></span> Login/Sign-up</a></li>
-          <div class="modal fade" id="login-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
-            <div class="modal-dialog">
-              <div class="loginmodal-container">
-                <h1 id="login-message">Login to your account.</h1>
-                <br>
-                <form>
-                  <input type="text" name="user" id="userName" placeholder="Username">
-                  <input type="password" name="password" id="password" placeholder="Password">
-                  <button type="button" id="login" class="btn btn-primary">Login</button>
-                  <button type="button" id="register" class="btn btn-primary">Register</button>
-                </form>
-                <div class="login-help"> - <a href="#">Forgot Password</a>
-                </div>
-              </div>
-            </div>
-          </div>
-          <li><a href="#" id="logout" style="display: none;"><span class="glyphicon glyphicon-user"></span> Logout</a></li>
           <li><a href="#">My Score<span class="badge"></span> 20</a></li>
       </div>
     </div>
   </nav>
   <div class="container">
     <div class="jumbotron">
-      <h1 class="newGoals">Let's Get Started on a New Goal</h1>
+      <h1 class="newGoals">Update any part of your goal that you want</h1>
       <form>
         <div class="form-group">
-          <label for="goal">Add a Goal:</label>
-          <input type="text" class="form-control" id="goal">
+          <label for="goal">Rewrite Goal:</label>
+          <input type="text" class="form-control" id="goal-update">
         </div>
         <div class="form-group">
-          <label for="difficulty">Difficulty Level (select one):</label>
-          <select class="form-control" id="difficulty">
+          <label for="difficulty">Reset Difficulty Level (select one):</label>
+          <select class="form-control" id="difficulty-update">
             <option value="1">1 (easy)</option>
             <option value="2">2</option>
             <option value="3">3</option>
@@ -73,11 +53,10 @@
             <option value="5">5 (hard)</option>
           </select>
           <br>
-          <button type="button" class="btn btn-warning" id="goalGrab">Add Goal</button>
+          <button type="button" class="btn btn-warning" id="goalUpdate">Update Goal</button>
         </div>
       </form>
     </div>
-    <p>Stuck with figuring out a new challenge? Why not try one of our <a href="starter_packs">Starter Packs</a>?</p>
   </div>
 </body>
 

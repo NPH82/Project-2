@@ -52,6 +52,16 @@ module.exports = function(app) {
       });
   });
 
+  app.get("/api/goals/:id", isAuthenticated, function(req, res) {
+    db.Goal.findOne({
+      where: {
+        id: req.params.id
+      }
+    }).then(function(dbGoal) {
+      res.json(dbGoal);
+    });
+  });
+
   app.post("/api/goals", isAuthenticated, function(req, res) {
     db.User.findOne({
         where: {
