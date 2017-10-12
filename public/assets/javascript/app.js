@@ -31,7 +31,7 @@ function listGoals() {
         incompleteArray.push(newGoal);
       } else {
         var newGoal = 
-          "<li class='goals' id='" + data[i].User.firebaseId + data[i].id + "' data-complete='true'>"
+          "<li class='goals' id='" + data[i].User.firebaseId + "|" + data[i].id + "' data-complete='true'>"
             +data[i].text
             +"<button class='btn btn-danger delete'>Delete</button>"
           +"</li>"
@@ -44,12 +44,16 @@ function listGoals() {
   })
 }
 
-function deleteGoal(id) {
+function deleteGoal(goalId) {
   $.ajax({
     method: "DELETE",
-    url: "/api/goals/" + id
+    url: "/api/goals",
+    data: {
+      id: goalId
+    }
   })
   .done(function(data) {
+    console.log(data)
     if (data) {
       listGoals();
     } else {
@@ -84,8 +88,8 @@ $(document).ready(function () {
       listGoals();
     } else {
       $("#title-span").html("Welcome ^_^");
-      $("incomplete-list").text("Here you can keep recurring goals that will update on a timely basis!");
-      $("complete-list").text("This is where your goals go when you complete them. You get points for these!");
+      $("#incomplete-list").html("Here you can keep recurring goals that will update on a timely basis!");
+      $("#complete-list").html("This is where your goals go when you complete them. You get points for these!");
     }
 
     $("#login").on("click", function(event) {
@@ -101,6 +105,7 @@ $(document).ready(function () {
             $("#modalInit").hide();
             $("#logout").show();
             $("#title-span").html("Welcome back, " + auth.currentUser.email + "!!");
+            listGoals();
           })
           .catch(function(err) {
             $("#login-message").html(err.message);
@@ -116,6 +121,8 @@ $(document).ready(function () {
           $("#logout").hide();
           $("#modalInit").show();
           $("#title-span").html("Welcome ^_^");
+          $("#incomplete-list").html("Here you can keep recurring goals that will update on a timely basis!");
+          $("#complete-list").html("This is where your goals go when you complete them. You get points for these!");
         })
     });
 
@@ -172,6 +179,10 @@ $(document).ready(function () {
       window.location.href = "/update_goal?goal_id=" + $(this).parent().attr("id").split("|")[1];
     });
 
+    $("body").on("click", ".delete", function (event) {
+      deleteGoal($(this).parent().attr("id").split("|")[1]);
+    })
+
     if (window.location.search.indexOf("?goal_id=") !== -1) {
       var goalId = window.location.search.split("=")[1];
       $.get("/api/goals/" + goalId).then(function (data) {
@@ -186,7 +197,6 @@ $(document).ready(function () {
         text: $("#goal-update").val().trim(),
         weight: $("#difficulty-update").val()
       };
-      console.log(goalUpdate);
       updateGoal(goalUpdate);
     });
   });

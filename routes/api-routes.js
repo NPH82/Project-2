@@ -23,16 +23,6 @@ module.exports = function(app) {
     });
   });
 
-  app.delete("/api/Users/:id", isAuthenticated, function(req, res) {
-    db.User.destroy({
-      where: {
-        id: req.params.id
-      }
-    }).then(function(dbUser) {
-      res.json(dbUser);
-    });
-  });
-
   app.get("/api/goals", isAuthenticated, function(req, res) {
     db.User.findOne({
         where: {
@@ -80,10 +70,10 @@ module.exports = function(app) {
       });
   });
 
-  app.delete("/api/goals/:id", isAuthenticated, function(req, res) {
+  app.delete("/api/goals", isAuthenticated, function(req, res) {
     db.Goal.destroy({
       where: {
-        id: req.params.id
+        id: req.body.id
       }
     }).then(function(dbGoal) {
       res.json(dbGoal);
