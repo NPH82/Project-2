@@ -123,3 +123,7 @@
 .login-help{
   font-size: 12px;
 }
+
+.update, .complete, .delete {
+  float: right;
+}

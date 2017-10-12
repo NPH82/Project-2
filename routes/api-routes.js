@@ -23,33 +23,30 @@ module.exports = function(app) {
     });
   });
 
-  app.delete("/api/Users/:id", isAuthenticated, function(req, res) {
-    db.User.destroy({
-      where: {
-        id: req.params.id
-      }
-    }).then(function(dbUser) {
-      res.json(dbUser);
-    });
+  app.get("/api/goals", isAuthenticated, function(req, res) {
+    db.User.findOne({
+        where: {
+          firebaseId: req.user.id
+        }
+      })
+      .then(function(dbUser) {
+        return db.Goal.findAll({
+          where: {
+            UserId: dbUser.id
+          },
+          include: [db.User]
+        })
+      })
+      .then(function(dbGoal) {
+        res.json(dbGoal);
+      });
   });
 
-  app.get("/api/goals/:category", isAuthenticated, function(req, res) {
-    db.Goal.findAll({
-      where: {
-        category: req.params.category,
-      },
-      include: [db.User]
-    }).then(function(dbGoal) {
-      res.json(dbGoal);
-    });
-  });
-
-  app.get("api/goals/:id", isAuthenticated, function(req, res) {
+  app.get("/api/goals/:id", isAuthenticated, function(req, res) {
     db.Goal.findOne({
       where: {
         id: req.params.id
-      },
-      include: [db.User]
+      }
     }).then(function(dbGoal) {
       res.json(dbGoal);
     });
@@ -58,7 +55,7 @@ module.exports = function(app) {
   app.post("/api/goals", isAuthenticated, function(req, res) {
     db.User.findOne({
         where: {
-          firebaseId: req.body.firebaseId
+          firebaseId: req.user.id
         }
       })
       .then(function(dbUser) {
@@ -73,10 +70,10 @@ module.exports = function(app) {
       });
   });
 
-  app.delete("/api/goals/:id", isAuthenticated, function(req, res) {
+  app.delete("/api/goals", isAuthenticated, function(req, res) {
     db.Goal.destroy({
       where: {
-        id: req.params.id
+        id: req.body.id
       }
     }).then(function(dbGoal) {
       res.json(dbGoal);
