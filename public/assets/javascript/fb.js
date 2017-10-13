@@ -12,11 +12,20 @@ firebase
 
 var auth = firebase.auth();
 
-function authReady(func) {
+auth.ready = function(func) {
   var unsubscribe = auth.onAuthStateChanged(function() {
     unsubscribe();
     func();
   });
+};
+
+auth.createAndSetUserWithEmailAndPassword = function(email, password) {
+  return auth
+    .createUserWithEmailAndPassword(email, password)
+    .then(function(user) {
+      auth.currentUser = user;
+      return setToken(user);
+    });
 };
 
 function deleteCookie() {
@@ -33,9 +42,9 @@ function setCookie(cname, cvalue) {
 
 function setToken(user) {
   if (!user) {
-    deleteCookie();
+    return Promise.resolve().then(deleteCookie);
   } else {
-    user.getIdToken().then(function(token) {
+    return user.getIdToken().then(function(token) {
       setCookie("token", token);
     });
   }
