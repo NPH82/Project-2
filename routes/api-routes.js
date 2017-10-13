@@ -81,13 +81,35 @@ module.exports = function(app) {
   });
 
   app.put("/api/goals", isAuthenticated, function(req, res) {
-    db.Goal.update(
-      req.body, {
-        where: {
-          id: req.body.id
-        }
-      }).then(function(dbGoal) {
-      res.json(dbGoal);
+    db.Goal.update(req.body, {
+      where: {
+        id: req.body.id
+      }
+    }).then(function(dbGoal) {
+      if (req.body.complete) {
+        db.User.findOne({
+          where: {
+            firebaseId: req.user.id
+          }
+        }).then(function (dbUser) {
+          db.User.update({
+            points: dbUser.points + req.body.weight
+          },
+          {
+            where: {
+              id: dbUser.id
+            }
+          })
+        })
+      }
+    }).then(function (dbUser) {
+      console.log("");
+      console.log("");
+      console.log(dbUser);
+      // res.json(dbUser);
     });
   });
 };
+
+        
+          
