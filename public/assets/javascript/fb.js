@@ -19,6 +19,15 @@ auth.ready = function(func) {
   });
 };
 
+auth.createAndSetUserWithEmailAndPassword = function(email, password) {
+  return auth
+    .createUserWithEmailAndPassword(email, password)
+    .then(function(user) {
+      auth.currentUser = user;
+      return setToken(user);
+    });
+};
+
 function deleteCookie() {
   document.cookie = "token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
 }
@@ -33,9 +42,9 @@ function setCookie(cname, cvalue) {
 
 function setToken(user) {
   if (!user) {
-    deleteCookie();
+    return Promise.resolve().then(deleteCookie);
   } else {
-    user.getIdToken().then(function(token) {
+    return user.getIdToken().then(function(token) {
       setCookie("token", token);
     });
   }

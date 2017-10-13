@@ -40,6 +40,14 @@ function listGoals() {
     }
     $("#incomplete-list").html(incompleteArray);
     $("#complete-list").html(completeArray);
+    getScore();
+  });
+}
+
+function getScore() {
+  $.get("/api/users").then(function (data) {
+    $("#score")
+      .html(data.points);
   })
 }
 
@@ -61,7 +69,7 @@ function deleteGoal(goalId) {
     });
 }
 
-function updateGoal(goal) {
+function updateGoal(goal, u) {
   $.ajax({
       method: "PUT",
       url: "/api/goals",
@@ -86,8 +94,12 @@ function updateGoal(goal) {
       listGoals();
     } else {
       $("#title-span").html("Welcome ^_^");
-      $("#incomplete-list").html("Here you can keep recurring goals that will update on a timely basis!");
-      $("#complete-list").html("This is where your goals go when you complete them. You get points for these!");
+      $("#incomplete-list").html(
+        "Here you can keep recurring goals that will update on a timely basis!"
+      );
+      $("#complete-list").html(
+        "This is where your goals go when you complete them. You get points for these!"
+      );
     }
 
     $("#login").on("click", function (event) {
@@ -102,7 +114,9 @@ function updateGoal(goal) {
             $("#login-modal").modal("hide");
             $("#modalInit").hide();
             $("#logout").show();
-            $("#title-span").html("Welcome back, " + auth.currentUser.email + "!!");
+            $("#title-span").html(
+              "Welcome back, " + auth.currentUser.email + "!!"
+            );
             listGoals();
           })
           .catch(function (err) {
@@ -111,20 +125,22 @@ function updateGoal(goal) {
       }
     });
 
-    $("#logout").on("click", function (event) {
+    $("#logout").on("click", function(event) {
       event.preventDefault();
-      auth
-        .signOut()
-        .then(function () {
-          $("#logout").hide();
-          $("#modalInit").show();
-          $("#title-span").html("Welcome ^_^");
-          $("#incomplete-list").html("Here you can keep recurring goals that will update on a timely basis!");
-          $("#complete-list").html("This is where your goals go when you complete them. You get points for these!");
-        })
+      auth.signOut().then(function() {
+        $("#logout").hide();
+        $("#modalInit").show();
+        $("#title-span").html("Welcome ^_^");
+        $("#incomplete-list").html(
+          "Here you can keep recurring goals that will update on a timely basis!"
+        );
+        $("#complete-list").html(
+          "This is where your goals go when you complete them. You get points for these!"
+        );
+      });
     });
 
-    $("#register").on("click", function (event) {
+    $("#register").on("click", function(event) {
       event.preventDefault();
       var newUser = getUserFormData();
       console.log(newUser);
@@ -162,8 +178,9 @@ function updateGoal(goal) {
           text: $("#goal").val().trim(),
           weight: $("#difficulty").val().trim(),
         }).then(function (data) {
+
           if (data) {
-            window.location = "/"
+            window.location = "/";
           }
         });
       }
@@ -172,35 +189,52 @@ function updateGoal(goal) {
     $("body").on("click", ".complete", function (event) {
       event.preventDefault();
       var goalDone = {
-        id: $(this).parent().attr("id").split("|")[1],
+        id: $(this)
+          .parent()
+          .attr("id")
+          .split("|")[1],
         complete: true
       };
-      updateGoal(goalDone);
+      updateGoal(goalDone, "api/goals/complete");
     });
 
     $("body").on("click", ".update", function (event) {
       event.preventDefault();
-      window.location.href = "/update_goal?goal_id=" + $(this).parent().attr("id").split("|")[1];
+      window.location.href =
+        "/update_goal?goal_id=" +
+        $(this)
+          .parent()
+          .attr("id")
+          .split("|")[1];
     });
 
-    $("body").on("click", ".delete", function (event) {
-      deleteGoal($(this).parent().attr("id").split("|")[1]);
-    })
+    $("body").on("click", ".delete", function(event) {
+      deleteGoal(
+        $(this)
+          .parent()
+          .attr("id")
+          .split("|")[1]
+      );
+    });
 
     if (window.location.search.indexOf("?goal_id=") !== -1) {
       var goalId = window.location.search.split("=")[1];
-      $.get("/api/goals/" + goalId).then(function (data) {
+      $.get("/api/goals/" + goalId).then(function(data) {
         $("#goal-update").val(data.text);
         $("#difficulty-update").val(data.weight);
-      })
+      });
     }
 
     $("#goalUpdate").on("click", function () {
       var goalUpdate = {
         id: window.location.search.split("=")[1],
-        text: $("#goal-update").val().trim(),
+        text: $("#goal-update")
+          .val()
+          .trim(),
         weight: $("#difficulty-update").val()
       };
-      updateGoal(goalUpdate);
+      updateGoal(goalUpdate, "api/goals/update");
+      window.location = "/"
     });
   });
+

@@ -13,7 +13,7 @@ module.exports = {
       }], {});
     */
 
-    return queryInterface.bulkInsert('User', [
+    return queryInterface.bulkInsert('users', [
       {
         name: 'something@name.com',
         firebaseId: 'QtCeP8TBIsdcVixAhenUDjNUmEi1'
@@ -41,7 +41,7 @@ module.exports = {
       Example:
       return queryInterface.bulkDelete('Person', null, {});
     */
-    return queryInterface.bulkDelete('User', [
+    return queryInterface.bulkDelete('users', [
       {
         name: 'something@name.com',
         firebaseId: 'QtCeP8TBIsdcVixAhenUDjNUmEi1'

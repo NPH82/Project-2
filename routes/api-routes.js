@@ -82,7 +82,7 @@ module.exports = function(app) {
     });
   });
 
-  app.put("/api/goals", isAuthenticated, function(req, res) {
+  app.put("/api/goals/update", isAuthenticated, function(req, res) {
     db.Goal.update(
       req.body, {
         where: {
@@ -92,4 +92,39 @@ module.exports = function(app) {
       res.json(dbGoal);
     });
   });
+
+  app.put("/api/goals/complete", isAuthenticated, function(req, res){
+    var goal;
+    var user;
+    db.Goal.findOne({
+      where: {
+        id: req.body.id
+      }
+    }).then(function (dbGoal) {
+      goal = dbGoal;
+      db.User.findOne({
+        where: {
+          firebaseId: req.user.id
+        }
+      }).then(function (dbUser) {
+        user = dbUser;
+        db.Goal.update(req.body, {
+          where: {
+            id: goal.id
+          }
+        }).then(function (dbUser) {
+          db.User.update({
+            points: user.points + goal.weight
+          },
+          {
+            where: {
+              id: user.id
+            }
+          }).then(function (dbUser) {
+            res.json(dbUser);
+          })
+        })
+      })
+    })
+  })
 };
