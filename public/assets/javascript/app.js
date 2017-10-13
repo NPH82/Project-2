@@ -14,19 +14,13 @@ function getUserFormData() {
 function listGoals() {
   $("#incomplete-list").empty();
   $("#complete-list").empty();
-  $.get("/api/goals").then(function(data) {
+  $.get("/api/goals").then(function (data) {
     var incompleteArray = [];
     var completeArray = [];
     for (var i = 0; i < data.length; i++) {
       if (!data[i].complete) {
         var newGoal =
-          "<li class='goals' id='" +
-          data[i].User.firebaseId +
-          "|" +
-          data[i].id +
-          "' value=" +
-          data[i].weight +
-          " data-complete='false'>" +
+          "<li class='goals' id='" + data[i].User.firebaseId + "|" + data[i].id + "' value=" + data[i].weight + " data-complete='false'>" +
           data[i].text +
           "<button class='btn btn-primary update'>Update Goal</button>" +
           "<button class='btn btn-success complete'>Mark as Complete</button>" +
@@ -36,11 +30,7 @@ function listGoals() {
         incompleteArray.push(newGoal);
       } else {
         var newGoal =
-          "<li class='goals' id='" +
-          data[i].User.firebaseId +
-          "|" +
-          data[i].id +
-          "' data-complete='true'>" +
+          "<li class='goals' id='" + data[i].User.firebaseId + "|" + data[i].id + "' data-complete='true'>" +
           data[i].text +
           "<button class='btn btn-danger delete'>Delete</button>" +
           "</li>" +
@@ -63,37 +53,39 @@ function getScore() {
 
 function deleteGoal(goalId) {
   $.ajax({
-    method: "DELETE",
-    url: "/api/goals",
-    data: {
-      id: goalId
-    }
-  }).done(function(data) {
-    console.log(data);
-    if (data) {
-      listGoals();
-    } else {
-      alert("Oops, something went wrong here, give it a minute and try again.");
-    }
-  });
+      method: "DELETE",
+      url: "/api/goals",
+      data: {
+        id: goalId
+      }
+    })
+    .done(function (data) {
+      console.log(data)
+      if (data) {
+        listGoals();
+      } else {
+        alert("Oops, something went wrong here, give it a minute and try again.")
+      }
+    });
 }
 
 function updateGoal(goal, u) {
   $.ajax({
-    method: "PUT",
-    url: u,
-    data: goal
-  }).done(function(data) {
-    if (data) {
-      listGoals();
-    } else {
-      alert("Oops, something went wrong here, give it a minute and try again.");
-    }
-  });
+      method: "PUT",
+      url: "/api/goals",
+      data: goal
+    })
+    .done(function (data) {
+      if (data) {
+        console.log(data);
+        window.location = "/"
+      } else {
+        alert("Oops, something went wrong here, give it a minute and try again.")
+      }
+    });
 }
-
-$(document).ready(function () {
-  auth.ready(function() {
+  auth
+    .ready(function () {
     if (auth.currentUser) {
       console.log(auth.currentUser);
       $("#modalInit").hide();
@@ -110,15 +102,15 @@ $(document).ready(function () {
       );
     }
 
-    $("#login").on("click", function(event) {
+    $("#login").on("click", function (event) {
       event.preventDefault();
       var newUser = getUserFormData();
       if (!newUser) {
         $("#login-message").html("One or more of the fields below is blank");
       } else {
         auth
-          .signInWithEmailAndPassword(newUser.username, newUser.password)
-          .then(function() {
+          .signInWithEmailAndPassword(newUser.userName, newUser.password)
+          .then(function () {
             $("#login-modal").modal("hide");
             $("#modalInit").hide();
             $("#logout").show();
@@ -127,7 +119,7 @@ $(document).ready(function () {
             );
             listGoals();
           })
-          .catch(function(err) {
+          .catch(function (err) {
             $("#login-message").html(err.message);
           });
       }
@@ -151,46 +143,42 @@ $(document).ready(function () {
     $("#register").on("click", function(event) {
       event.preventDefault();
       var newUser = getUserFormData();
+      console.log(newUser);
       if (!newUser) {
         $("#login-message").html("One or more of the fields below is blank");
       } else {
+
         auth
-          .createAndSetUserWithEmailAndPassword(
-            newUser.username,
-            newUser.password
-          )
-          .then(function() {
+          .createUserWithEmailAndPassword(newUser.username, newUser.password)
+          .then(function () {
             return $.post("api/users", {
               name: auth.currentUser.email,
               firebaseId: auth.currentUser.uid
-            });
+            })
           })
-          .then(function(data) {
+          .then(function (data) {
             $("#login-modal").modal("hide");
             $("#modalInit").hide();
             $("#logout").show();
             $("#title-span").html("Welcome to the site, " + data.name + "!!");
           })
-          .catch(function(err) {
+          .catch(function (err) {
             $("#login-message").html(err.message);
           });
       }
     });
 
-    $("#goalGrab").on("click", function(event) {
+    $("#goalGrab").on("click", function (event) {
       event.preventDefault();
       if (!auth.currentUser) {
         $("#login-message").html("Please log in or register first!");
         $("#login-modal").modal("show");
       } else {
         $.post("api/goals", {
-          text: $("#goal")
-            .val()
-            .trim(),
-          weight: $("#difficulty")
-            .val()
-            .trim()
-        }).then(function(data) {
+          text: $("#goal").val().trim(),
+          weight: $("#difficulty").val().trim(),
+        }).then(function (data) {
+
           if (data) {
             window.location = "/";
           }
@@ -198,7 +186,7 @@ $(document).ready(function () {
       }
     });
 
-    $("body").on("click", ".complete", function(event) {
+    $("body").on("click", ".complete", function (event) {
       event.preventDefault();
       var goalDone = {
         id: $(this)
@@ -210,7 +198,7 @@ $(document).ready(function () {
       updateGoal(goalDone, "api/goals/complete");
     });
 
-    $("body").on("click", ".update", function(event) {
+    $("body").on("click", ".update", function (event) {
       event.preventDefault();
       window.location.href =
         "/update_goal?goal_id=" +
@@ -237,7 +225,7 @@ $(document).ready(function () {
       });
     }
 
-    $("#goalUpdate").on("click", function() {
+    $("#goalUpdate").on("click", function () {
       var goalUpdate = {
         id: window.location.search.split("=")[1],
         text: $("#goal-update")
@@ -249,4 +237,4 @@ $(document).ready(function () {
       window.location = "/"
     });
   });
-})
+

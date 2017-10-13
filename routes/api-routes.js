@@ -24,12 +24,14 @@ module.exports = function(app) {
   });
 
   app.get("/api/goals", isAuthenticated, function(req, res) {
+    console.log(req.user);
     db.User.findOne({
         where: {
           firebaseId: req.user.id
         }
       })
       .then(function(dbUser) {
+        console.log(dbUser);
         return db.Goal.findAll({
           where: {
             UserId: dbUser.id
