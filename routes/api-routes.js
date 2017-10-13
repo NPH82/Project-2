@@ -80,36 +80,49 @@ module.exports = function(app) {
     });
   });
 
-  app.put("/api/goals", isAuthenticated, function(req, res) {
-    db.Goal.update(req.body, {
+  app.put("/api/goals/update", isAuthenticated, function(req, res) {
+    db.Goal.update(
+      req.body, {
+        where: {
+          id: req.body.id
+        }
+      }).then(function(dbGoal) {
+      res.json(dbGoal);
+    });
+  });
+
+  app.put("/api/goals/complete", isAuthenticated, function(req, res){
+    var goal;
+    var user;
+    db.Goal.findOne({
       where: {
         id: req.body.id
       }
-    }).then(function(dbGoal) {
-      if (req.body.complete) {
-        db.User.findOne({
+    }).then(function (dbGoal) {
+      goal = dbGoal;
+      db.User.findOne({
+        where: {
+          firebaseId: req.user.id
+        }
+      }).then(function (dbUser) {
+        user = dbUser;
+        db.Goal.update(req.body, {
           where: {
-            firebaseId: req.user.id
+            id: goal.id
           }
         }).then(function (dbUser) {
           db.User.update({
-            points: dbUser.points + req.body.weight
+            points: user.points + goal.weight
           },
           {
             where: {
-              id: dbUser.id
+              id: user.id
             }
+          }).then(function (dbUser) {
+            res.json(dbUser);
           })
         })
-      }
-    }).then(function (dbUser) {
-      console.log("");
-      console.log("");
-      console.log(dbUser);
-      // res.json(dbUser);
-    });
-  });
+      })
+    })
+  })
 };
-
-        
-          
