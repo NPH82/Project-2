@@ -12,7 +12,7 @@ firebase
 
 var auth = firebase.auth();
 
-function authReady(func) {
+auth.ready = function(func) {
   var unsubscribe = auth.onAuthStateChanged(function() {
     unsubscribe();
     func();
