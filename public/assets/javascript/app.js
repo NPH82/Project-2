@@ -249,5 +249,19 @@ function updateGoal(goal, u) {
       updateGoal(goalUpdate, "api/goals/update");
       window.location = "/"
     });
+
+    $("form").on("submit", function (event) {
+      event.preventDefault();
+      var elements = $(event.target).children();
+      $.each($(elements).find("input:checked"), function () {
+        console.log(this);
+        var newItem = {
+          text: $(this).attr("data"),
+          weight: $(this).val()
+        };
+        $.post("/api/goals", newItem);
+      })
+      window.location = "/"
+    })
   });
 
