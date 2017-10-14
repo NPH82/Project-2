@@ -23,7 +23,7 @@ if (auth.currentUser) {
   $("#modalInit").hide();
   $("#logout").show();
   $("#title-span").html("Welcome back, " + auth.currentUser.email + "!!");
-  // listGoals();
+  listGoals();
 } else {
   $("#title-span").html("Welcome ^_^");
   $("#incomplete-list").html(
@@ -43,27 +43,30 @@ $("#register").on("click", function(event) {
   if (!newUser) {
     $("#login-message").html("One or more of the fields below is blank");
   } else {
-
+    console.log("else statement");
     auth
-      .createUserWithEmailAndPassword(newUser.username, newUser.password)
+      .createAndSetUserWithEmailAndPassword(newUser.username, newUser.password)
       .then(function () {
         console.log("name: ", auth.currentUser.email)
         console.log("firebase ud: ", auth.currentUser.uid)
-        return $.post("api/users", {
+        $.post("api/users", {
           name: auth.currentUser.email,
           firebaseId: auth.currentUser.uid
          
         })
       })
       .then(function (data) {
-        $("#login-modal").modal("hide");
-        $("#modalInit").hide();
-        $("#logout").show();
-        $("#title-span").html("Welcome to the site, " + data.name + "!!");
+        // console.log("somethimng else", data);
+        // $("#login-modal").modal("hide");
+        // $("#modalInit").hide();
+        // $("#logout").show();
+        // $("#title-span").html("Welcome to the site, " + data.name + "!!");
+        window.location='/';
       })
       .catch(function (err) {
         $("#login-message").html(err.message);
       });
+    
   }
 });
 
@@ -155,7 +158,7 @@ function deleteGoal(goalId) {
 function updateGoal(goal, u) {
   $.ajax({
       method: "PUT",
-      url: "/api/goals",
+      url: u,
       data: goal
     })
     .done(function (data) {
