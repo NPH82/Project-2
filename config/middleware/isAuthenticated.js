@@ -12,6 +12,7 @@ module.exports = function(req, res, next) {
     .then(function(decodedToken) {
 
       req.user = { email: decodedToken.email, id: decodedToken.uid };
+      console.log("admin issue: ", req.user);
       next();
     })
     .catch(function(err) {

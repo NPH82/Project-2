@@ -15,7 +15,7 @@ var auth = firebase.auth();
 auth.ready = function(func) {
   var unsubscribe = auth.onAuthStateChanged(function() {
     unsubscribe();
-    func();
+  func();
   });
 };
 
@@ -42,9 +42,11 @@ function setCookie(cname, cvalue) {
 
 function setToken(user) {
   if (!user) {
-    return Promise.resolve().then(deleteCookie);
+    return Promise.resolve().then(deleteCookie());
+    // deletecookie();
   } else {
     return user.getIdToken().then(function(token) {
+
       setCookie("token", token);
     });
   }

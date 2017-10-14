@@ -2,7 +2,9 @@ var express = require("express");
 var bodyParser = require("body-parser");
 var cookieParser = require("cookie-parser");
 var path = require("path");
-var exphbs = require("express-handlebars");
+// var exphbs = require("express-handlebars");
+
+var isAuthenticated = require("./config/middleware/isAuthenticated");
 
 var app = express();
 var PORT = process.env.PORT || 3000;
@@ -18,16 +20,28 @@ app.use(bodyParser.json({ type: "application/vnd.api+json" }));
 
 app.use(express.static("public"));
 
-// using Handlebars 
-var exphbs = require("express-handlebars");
-app.engine("handlebars", exphbs({ defaultLayout: "main" }));
-app.set("view engine", "handlebars");
-
-//Future Implementations for running routes (maybe a better spot for these?)
-//var routes = require("./controllers/controller.js");
-//app.use(routes);
 require("./routes/api-routes.js")(app);
 require("./routes/html-routes.js")(app);
+
+//trying get here
+app.get("/api/users", isAuthenticated, function(req, res) {
+  console.log("you are logged in as:", req.user)
+  db.User.findOne({
+    where: {
+      firebaseId: req.user.id
+    },
+    include: [db.Goal]
+  }).then(function(dbUser) {
+    res.json(dbUser);
+  });
+});
+
+// using Handlebars 
+// var exphbs = require("express-handlebars");
+// app.engine("handlebars", exphbs({ defaultLayout: "main" }));
+// app.set("view engine", "handlebars");
+
+
 
 db.sequelize.sync().then(function() {
   console.log("Database synced")

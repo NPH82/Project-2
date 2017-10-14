@@ -1,7 +1,13 @@
+
+
+auth
+.ready(function () {
+
+//getting user data from login modal
 function getUserFormData() {
   var userNameInput = $("#userName");
   var passwordInput = $("#password");
-  if (!userNameInput.val().trim || !passwordInput.val().trim()) {
+  if (!userNameInput.val().trim() || !passwordInput.val().trim()) {
     return false;
   }
   var newUser = {
@@ -10,6 +16,83 @@ function getUserFormData() {
   };
   return newUser;
 }
+
+//sets index page
+if (auth.currentUser) {
+  console.log(auth.currentUser);
+  $("#modalInit").hide();
+  $("#logout").show();
+  $("#title-span").html("Welcome back, " + auth.currentUser.email + "!!");
+  // listGoals();
+} else {
+  $("#title-span").html("Welcome ^_^");
+  $("#incomplete-list").html(
+    "Here you can keep recurring goals that will update on a timely basis!"
+  );
+  $("#complete-list").html(
+    "This is where your goals go when you complete them. You get points for these!"
+  );
+}
+
+//registering new user
+
+$("#register").on("click", function(event) {
+  event.preventDefault();
+  var newUser = getUserFormData();
+  console.log(newUser);
+  if (!newUser) {
+    $("#login-message").html("One or more of the fields below is blank");
+  } else {
+
+    auth
+      .createUserWithEmailAndPassword(newUser.username, newUser.password)
+      .then(function () {
+        console.log("name: ", auth.currentUser.email)
+        console.log("firebase ud: ", auth.currentUser.uid)
+        return $.post("api/users", {
+          name: auth.currentUser.email,
+          firebaseId: auth.currentUser.uid
+         
+        })
+      })
+      .then(function (data) {
+        $("#login-modal").modal("hide");
+        $("#modalInit").hide();
+        $("#logout").show();
+        $("#title-span").html("Welcome to the site, " + data.name + "!!");
+      })
+      .catch(function (err) {
+        $("#login-message").html(err.message);
+      });
+  }
+});
+
+
+//login user
+$("#login").on("click", function (event) {
+  event.preventDefault();
+  var newUser = getUserFormData();
+  if (!newUser) {
+    $("#login-message").html("One or more of the fields below is blank");
+  } else {
+    auth
+      .signInWithEmailAndPassword(newUser.userName, newUser.password)
+      .then(function () {
+        $("#login-modal").modal("hide");
+        $("#modalInit").hide();
+        $("#logout").show();
+        $("#title-span").html(
+          "Welcome back, " + auth.currentUser.email + "!!"
+        );
+        // listGoals();
+      })
+      .catch(function (err) {
+        $("#login-message").html(err.message);
+      });
+  }
+});
+
+//Hiding goals//*** */
 
 function listGoals() {
   $("#incomplete-list").empty();
@@ -84,47 +167,11 @@ function updateGoal(goal, u) {
       }
     });
 }
-  auth
-    .ready(function () {
-    if (auth.currentUser) {
-      console.log(auth.currentUser);
-      $("#modalInit").hide();
-      $("#logout").show();
-      $("#title-span").html("Welcome back, " + auth.currentUser.email + "!!");
-      listGoals();
-    } else {
-      $("#title-span").html("Welcome ^_^");
-      $("#incomplete-list").html(
-        "Here you can keep recurring goals that will update on a timely basis!"
-      );
-      $("#complete-list").html(
-        "This is where your goals go when you complete them. You get points for these!"
-      );
-    }
+ 
 
-    $("#login").on("click", function (event) {
-      event.preventDefault();
-      var newUser = getUserFormData();
-      if (!newUser) {
-        $("#login-message").html("One or more of the fields below is blank");
-      } else {
-        auth
-          .signInWithEmailAndPassword(newUser.userName, newUser.password)
-          .then(function () {
-            $("#login-modal").modal("hide");
-            $("#modalInit").hide();
-            $("#logout").show();
-            $("#title-span").html(
-              "Welcome back, " + auth.currentUser.email + "!!"
-            );
-            listGoals();
-          })
-          .catch(function (err) {
-            $("#login-message").html(err.message);
-          });
-      }
-    });
 
+    // LOGOUT FUNCTION
+   
     $("#logout").on("click", function(event) {
       event.preventDefault();
       auth.signOut().then(function() {
@@ -139,34 +186,8 @@ function updateGoal(goal, u) {
         );
       });
     });
+ 
 
-    $("#register").on("click", function(event) {
-      event.preventDefault();
-      var newUser = getUserFormData();
-      console.log(newUser);
-      if (!newUser) {
-        $("#login-message").html("One or more of the fields below is blank");
-      } else {
-
-        auth
-          .createUserWithEmailAndPassword(newUser.username, newUser.password)
-          .then(function () {
-            return $.post("api/users", {
-              name: auth.currentUser.email,
-              firebaseId: auth.currentUser.uid
-            })
-          })
-          .then(function (data) {
-            $("#login-modal").modal("hide");
-            $("#modalInit").hide();
-            $("#logout").show();
-            $("#title-span").html("Welcome to the site, " + data.name + "!!");
-          })
-          .catch(function (err) {
-            $("#login-message").html(err.message);
-          });
-      }
-    });
 
     $("#goalGrab").on("click", function (event) {
       event.preventDefault();
