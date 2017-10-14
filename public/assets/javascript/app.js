@@ -23,7 +23,7 @@ if (auth.currentUser) {
   $("#modalInit").hide();
   $("#logout").show();
   $("#title-span").html("Welcome back, " + auth.currentUser.email + "!!");
-  //listGoals();
+  listGoals();
 } else {
   $("#title-span").html("Welcome ^_^");
   $("#incomplete-list").html(
@@ -158,7 +158,7 @@ function deleteGoal(goalId) {
 function updateGoal(goal, u) {
   $.ajax({
       method: "PUT",
-      url: "/api/goals",
+      url: u,
       data: goal
     })
     .done(function (data) {
