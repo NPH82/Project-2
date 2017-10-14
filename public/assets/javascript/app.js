@@ -56,11 +56,6 @@ $("#register").on("click", function(event) {
         })
       })
       .then(function (data) {
-        // console.log("somethimng else", data);
-        // $("#login-modal").modal("hide");
-        // $("#modalInit").hide();
-        // $("#logout").show();
-        // $("#title-span").html("Welcome to the site, " + data.name + "!!");
         window.location='/';
       })
       .catch(function (err) {
@@ -79,15 +74,9 @@ $("#login").on("click", function (event) {
     $("#login-message").html("One or more of the fields below is blank");
   } else {
     auth
-      .signInWithEmailAndPassword(newUser.userName, newUser.password)
+      .signInWithEmailAndPassword(newUser.username, newUser.password)
       .then(function () {
-        $("#login-modal").modal("hide");
-        $("#modalInit").hide();
-        $("#logout").show();
-        $("#title-span").html(
-          "Welcome back, " + auth.currentUser.email + "!!"
-        );
-        // listGoals();
+        window.location = "/"
       })
       .catch(function (err) {
         $("#login-message").html(err.message);
