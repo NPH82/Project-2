@@ -1,24 +1,24 @@
-{
-  "development": {
+
+  {
+    "development": {
     "username": "root",
     "password": "root",
-
     "database": "project2db",
     "host": "localhost",
     "dialect": "mysql"
-  },
+    },
   "test": {
     "username": "root",
     "password": "root",
-    "database": "database_test",
+    "database": "project2db",
     "host": "localhost",
     "dialect": "mysql"
   },
   "production": {
     "username": "root",
     "password": "root",
-    "database": "database_production",
+    "database": "project2db",
     "host": "localhost",
     "dialect": "mysql"
-  }
+  } 
 }

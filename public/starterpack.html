@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,8 +8,11 @@
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <link rel="stylesheet" href="assets/css/style.css">
+  <script src="https://www.gstatic.com/firebasejs/4.5.0/firebase.js"></script>
   <title>Goal and Get It</title>
 </head>
+
 <body>
   <nav class="navbar navbar-inverse">
     <div class="container-fluid">
@@ -22,13 +26,30 @@
       </div>
       <div class="collapse navbar-collapse" id="myNavbar">
         <ul class="nav navbar-nav">
-          <li class="active"><a href="#">Home</a></li>
-          <li><a href="creategoals.html">Add New Goal</a></li>
-          <li><a href="starterpack.html">Starter Pack</a></li>
+          <li><a href="/">Home</a></li>
+          <li><a href="create_goal">Add New Goal</a></li>
+          <li class="active"><a href="starter_packs">Starter Pack</a></li>
         </ul>
         <ul class="nav navbar-nav navbar-right">
-          <li><a href="#"><span class="glyphicon glyphicon-user"></span> Account Settings</a></li>
-          <li><a href="#">My Score<span class="badge"></span> 20</a></li>
+          <li><a href="#" data-toggle="modal" data-target="#login-modal" id="modalInit"><span class="glyphicon glyphicon-user"></span> Login/Sign-up</a></li>
+          <div class="modal fade" id="login-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+            <div class="modal-dialog">
+              <div class="loginmodal-container">
+                <h1 id="login-message">Login to your account.</h1>
+                <br>
+                <form>
+                  <input type="text" name="user" id="userName" placeholder="Username">
+                  <input type="password" name="password" id="password" placeholder="Password">
+                  <button type="button" id="login" class="btn btn-primary">Login</button>
+                  <button type="button" id="register" class="btn btn-primary">Register</button>
+                </form>
+                <div class="login-help"> - <a href="#">Forgot Password</a>
+                </div>
+              </div>
+            </div>
+          </div>
+          <li><a href="#" id="logout" style="display: none;"><span class="glyphicon glyphicon-user"></span> Logout</a></li>
+          <li><a href="#">My Score<span class="badge" id="score">0</span></a></li>
         </ul>
       </div>
     </div>
@@ -37,55 +58,64 @@
     <div class="jumbotron">
       <h1 class="starter">Starter Packs</h1>
       <hr>
-        <p>Try out a pre-selected set of goals to get you started.</p>
-        <ul>
-          <li>Easy set up.</li>
-          <li>Attainable goals.</li>
-          <li>Start earning points TODAY.</li>
-        </ul>
+      <p>Try out a pre-selected set of goals to get you started.</p>
+      <ul>
+        <li>Easy set up.</li>
+        <li>Attainable goals.</li>
+        <li>Start earning points TODAY.</li>
+      </ul>
     </div>
     <div class="jumbotron">
       <h1 class="selfcare">Self Care</h1>
       <p>Select up to 3.</p>
       <div class="checkbox">
-        <label><input type="checkbox" class="goals" data="incomplete" value="1">Spend 10 minutes outdoors.</label>
+        <label>
+          <input type="checkbox" class="goals" data="incomplete" value="1">Spend 10 minutes outdoors.</label>
       </div>
       <div class="checkbox">
-        <label><input type="checkbox" class="goals" data="incomplete" value="2">Eat a Well-balanced meal.</label>
+        <label>
+          <input type="checkbox" class="goals" data="incomplete" value="2">Eat a Well-balanced meal.</label>
       </div>
       <div class="checkbox">
-        <label><input type="checkbox" class="goals" data="incomplete" value="1">Wake up by 9 a.m.</label>
+        <label>
+          <input type="checkbox" class="goals" data="incomplete" value="1">Wake up by 9 a.m.</label>
       </div>
       <a href="#" class="btn btn-success" role="button">Get Started</a>
-    </div>
-    <div class="jumbotron">
       <h1 class="savings">Save some Money.</h1>
       <p>Select up to 3.</p>
       <div class="checkbox">
-        <label><input type="checkbox" class="goals" data="incomplete" value="1">Put change from pockets in piggybank.</label>
+        <label>
+          <input type="checkbox" class="goals" data="incomplete" value="1">Put change from pockets in piggybank.</label>
       </div>
       <div class="checkbox">
-        <label><input type="checkbox" class="goals" data="incomplete" value="3">Pack your lunch.</label>
+        <label>
+          <input type="checkbox" class="goals" data="incomplete" value="3">Pack your lunch.</label>
       </div>
       <div class="checkbox">
-        <label><input type="checkbox" class="goals" data="incomplete" value="2">Buy a smaller coffee or tea from the store.</label>
+        <label>
+          <input type="checkbox" class="goals" data="incomplete" value="2">Buy a smaller coffee or tea from the store.</label>
       </div>
       <a href="#" class="btn btn-success" role="button">Get Started</a>
-    </div>
-    <div class="jumbotron">
       <h1 class="savings">Get in Shape.</h1>
       <p>Select up to 3.</p>
       <div class="checkbox">
-        <label><input type="checkbox" class="goals" data="incomplete" value="1">Take a walk around the block.</label>
+        <label>
+          <input type="checkbox" class="goals" data="incomplete" value="1">Take a walk around the block.</label>
       </div>
       <div class="checkbox">
-        <label><input type="checkbox" class="goals" data="incomplete" value="3">Complete a 5 minute workout.</label>
+        <label>
+          <input type="checkbox" class="goals" data="incomplete" value="3">Complete a 5 minute workout.</label>
       </div>
       <div class="checkbox">
-        <label><input type="checkbox" class="goals" data="incomplete" value="1">Eat a piece of fruit.</label>
+        <label>
+          <input type="checkbox" class="goals" data="incomplete" value="1">Eat a piece of fruit.</label>
       </div>
       <a href="#" class="btn btn-success" role="button">Get Started</a>
     </div>
   </div>
+  <script src="assets/javascript/fb.js"></script>
+  <script src="assets/javascript/app.js"></script>
 </body>
 </html>
+
+
