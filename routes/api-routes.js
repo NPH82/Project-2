@@ -4,20 +4,18 @@ var db = require("../models");
 var isAuthenticated = require("../config/middleware/isAuthenticated");
 
 module.exports = function(app) {
-
-//Moved to Server.js
   
-  // app.get("/api/users", isAuthenticated, function(req, res) {
-  //   console.log("1st req.use:", req.user)
-  //   db.User.findOne({
-  //     where: {
-  //       firebaseId: req.user.id
-  //     },
-  //     include: [db.Goal]
-  //   }).then(function(dbUser) {
-  //     res.json(dbUser);
-  //   });
-  // });
+  app.get("/api/users", isAuthenticated, function(req, res) {
+    console.log("1st req.use:", req.user)
+    db.User.findOne({
+      where: {
+        firebaseId: req.user.id
+      },
+      include: [db.Goal]
+    }).then(function(dbUser) {
+      res.json(dbUser);
+    });
+  });
 
   app.post("/api/users", function(req, res) {
     console.log("req.body: " , req.body)

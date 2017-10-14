@@ -45,7 +45,6 @@ function setToken(user) {
   console.log("pre baking: ", user);
   if (!user) {
     return Promise.resolve().then(deleteCookie());
-    // deletecookie();
   } else {
     console.log("else:")
     return user.getIdToken().then(function(token) {
