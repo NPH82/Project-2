@@ -20,7 +20,6 @@ auth.ready = function(func) {
 };
 
 auth.createAndSetUserWithEmailAndPassword = function(email, password) {
-  console.log("we got here");
   return auth
     .createUserWithEmailAndPassword(email, password)
     .then(function(user) {
@@ -42,11 +41,9 @@ function setCookie(cname, cvalue) {
 }
 
 function setToken(user) {
-  console.log("pre baking: ", user);
   if (!user) {
     return Promise.resolve().then(deleteCookie());
   } else {
-    console.log("else:")
     return user.getIdToken().then(function(token) {
 
       setCookie("token", token);

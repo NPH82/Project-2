@@ -1,4 +1,4 @@
-
+var listOfGoals = [];
 
 auth
 .ready(function () {
@@ -19,7 +19,6 @@ function getUserFormData() {
 
 //sets index page
 if (auth.currentUser) {
-  console.log(auth.currentUser);
   $("#modalInit").hide();
   $("#logout").show();
   $("#title-span").html("Welcome back, " + auth.currentUser.email + "!!");
@@ -39,16 +38,12 @@ if (auth.currentUser) {
 $("#register").on("click", function(event) {
   event.preventDefault();
   var newUser = getUserFormData();
-  console.log(newUser);
   if (!newUser) {
     $("#login-message").html("One or more of the fields below is blank");
   } else {
-    console.log("else statement");
     auth
       .createAndSetUserWithEmailAndPassword(newUser.username, newUser.password)
       .then(function () {
-        console.log("name: ", auth.currentUser.email)
-        console.log("firebase ud: ", auth.currentUser.uid)
         $.post("api/users", {
           name: auth.currentUser.email,
           firebaseId: auth.currentUser.uid
@@ -95,14 +90,17 @@ function listGoals() {
     for (var i = 0; i < data.length; i++) {
       if (!data[i].complete) {
         var newGoal =
-          "<li class='goals' id='" + data[i].User.firebaseId + "|" + data[i].id + "' value=" + data[i].weight + " data-complete='false'>" +
+        "<transition v-on:before-enter='beforeEnter' v-on:enter='enter' v-on:leave='leave' v-bind:css='false'>" +
+         "<li v-if='show' class='goals' id='" + data[i].User.firebaseId + "|" + data[i].id + "' value=" + data[i].weight + " data-complete='false'>" +
           data[i].text +
           "<button class='btn btn-primary update'>Update Goal</button>" +
-          "<button class='btn btn-success complete'>Mark as Complete</button>" +
+          "<button @click='show = !show' class='btn btn-success complete'>Mark as Complete</button>" +
           "<button class='btn btn-danger delete'>Delete</button>" +
           "</li>" +
+          "</transition>" +
           "<br>";
         incompleteArray.push(newGoal);
+        listOfGoals = data;
       } else {
         var newGoal =
           "<li class='goals' id='" + data[i].User.firebaseId + "|" + data[i].id + "' data-complete='true'>" +
@@ -135,7 +133,6 @@ function deleteGoal(goalId) {
       }
     })
     .done(function (data) {
-      console.log(data)
       if (data) {
         listGoals();
       } else {
@@ -152,7 +149,6 @@ function updateGoal(goal, u) {
     })
     .done(function (data) {
       if (data) {
-        console.log(data);
         window.location = "/"
       } else {
         alert("Oops, something went wrong here, give it a minute and try again.")
@@ -264,4 +260,3 @@ function updateGoal(goal, u) {
       window.location = "/"
     })
   });
-
