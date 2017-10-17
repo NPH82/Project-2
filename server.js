@@ -16,22 +16,10 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.text());
 app.use(bodyParser.json({ type: "application/vnd.api+json" }));
 
-
 app.use(express.static("public"));
 
 require("./routes/api-routes.js")(app);
 require("./routes/html-routes.js")(app);
-
-app.get("/api/users", isAuthenticated, function(req, res) {
-  db.User.findOne({
-    where: {
-      firebaseId: req.user.id
-    },
-    include: [db.Goal]
-  }).then(function(dbUser) {
-    res.json(dbUser);
-  });
-});
 
 db.sequelize.sync().then(function() {
   console.log("Database synced")

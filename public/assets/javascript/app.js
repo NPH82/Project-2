@@ -71,13 +71,7 @@ $("#login").on("click", function (event) {
     auth
       .signInWithEmailAndPassword(newUser.username, newUser.password)
       .then(function () {
-        $("#login-modal").modal("hide");
-        $("#modalInit").hide();
-        $("#logout").show();
-        $("#title-span").html(
-          "Welcome back, " + auth.currentUser.email + "!!"
-        );
-        // listGoals();
+        window.location = "/"
       })
       .catch(function (err) {
         $("#login-message").html(err.message);
@@ -251,4 +245,18 @@ function updateGoal(goal, u) {
       updateGoal(goalUpdate, "api/goals/update");
       window.location = "/"
     });
+
+    $("form").on("submit", function (event) {
+      event.preventDefault();
+      var elements = $(event.target).children();
+      $.each($(elements).find("input:checked"), function () {
+        console.log(this);
+        var newItem = {
+          text: $(this).attr("data"),
+          weight: $(this).val()
+        };
+        $.post("/api/goals", newItem);
+      })
+      window.location = "/"
+    })
   });
