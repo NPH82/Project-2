@@ -10,6 +10,8 @@
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
   <link rel="stylesheet" href="assets/css/style.css">
   <script src="https://www.gstatic.com/firebasejs/4.5.0/firebase.js"></script>
+  <script src="https://unpkg.com/vue"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/velocity/1.2.3/velocity.min.js"></script>
   <title>Goal and Get It</title>
 </head>
 
@@ -54,15 +56,20 @@
       </div>
     </div>
   </nav>
-  <div class="container">
+  <div id="app" class="container">
     <div class="jumbotron">
       <h1 class="welcome" id="title-span"></h1>
     </div>
     <div class="jumbotron">
       <h1 class="currentGoals">Current Goals</h1>
       <hr>
+      <div id="app2">
       <ul id="incomplete-list">
+        <li v-for="incomplete in goals.incompleteGoals">
+          {{ incomplete.text }}
+        </li>
       </ul>
+      </div>
       <h1 class="completedGoals">Completed Goals</h1>
       <hr>
       <ul id="complete-list">
@@ -71,5 +78,7 @@
   </div>
   <script src="assets/javascript/fb.js"></script>
   <script src="assets/javascript/app.js"></script>
+  <script src="assets/javascript/vue.js"></script>
+
 </body>
 </html>
